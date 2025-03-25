@@ -1,9 +1,7 @@
 import shelve
-
-import shelve
 import re
 
-# Крок 1: Створення класу Conference
+# Створення класу Conference
 class Conference:
     def __init__(self, name, location, participants):
         if not name.strip():
@@ -28,7 +26,7 @@ class Conference:
     def __add__(self, other):
         return Conference(self.name + " & " + other.name, self.location, self.participants + other.participants)
 
-# Крок 4: Створення підкласів
+# Створення підкласів
 class ScienceConference(Conference):
     def __init__(self, name, location, participants, topic):
         super().__init__(name, location, participants)
@@ -75,7 +73,6 @@ def view_all_conferences():
             print("Записи відсутні в базі даних.")
             return False
         else:
-            # Виводимо всі конференції з їх порядковими номерами
             print("\nСписок конференцій:")
             for idx, key in enumerate(db, 1):
                 conference = db[key]
@@ -92,7 +89,8 @@ def view_conference_details(conference_number):
             if 0 < conference_number <= len(conference_list):
                 conference = conference_list[conference_number - 1]
                 print("\nДеталі конференції:")
-                print(conference.get_details())  # Викликаємо метод get_details
+                print(conference.get_details())  
+                
             else:
                 print("Невірний номер конференції.")
 
