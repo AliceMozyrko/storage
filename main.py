@@ -17,12 +17,6 @@ class Conference:
     def __str__(self):
         return f"Конференція: {self.name}, Локація: {self.location}, Учасників: {self.participants}"
     
-    def add_participants(self, number):
-        if number < 0:
-            return "Кількість учасників не може бути від'ємною"
-        self.participants += number
-        return f"Кількість учасників оновлена: {self.participants}"
-    
     def __add__(self, other):
         return Conference(self.name + " & " + other.name, self.location, self.participants + other.participants)
 
@@ -39,6 +33,9 @@ class ScienceConference(Conference):
     
     def get_details(self):
         return f"Наукова конференція {self.name}, Тема: {self.topic}, Локація: {self.location}, Учасників: {self.participants}"
+    
+    def suggest_journals(self): 
+        return ["Science", "Cell", "Journal of AI Research", "Physical Review Letters"]
 
 class BusinessConference(Conference):
     def __init__(self, name, location, participants, industry):
@@ -52,6 +49,14 @@ class BusinessConference(Conference):
 
     def get_details(self):
         return f"Комерційна конференція {self.name}, Галузь: {self.industry}, Локація: {self.location}, Учасників: {self.participants}"
+    
+    def suggest_sponsors(self):
+        sponsors = {
+            "IT": ["Google", "Microsoft", "Amazon"],
+            "Finance": ["Goldman Sachs", "JP Morgan", "PayPal"],
+            "Healthcare": ["Pfizer", "Johnson & Johnson", "Medtronic"]
+        }
+        return sponsors.get(self.industry, ["General Electric", "Local Businesses"])
 
 class DevelopmentConference(Conference):
     def __init__(self, name, location, participants, focus_area):
@@ -65,6 +70,14 @@ class DevelopmentConference(Conference):
 
     def get_details(self):
         return f"Конференція з розвитку {self.name}, Сфера: {self.focus_area}, Локація: {self.location}, Учасників: {self.participants}"
+    
+    def recommend_books(self):
+        books = {
+            "Leadership": ["Leaders Eat Last - Simon Sinek", "The 5 Levels of Leadership - John C. Maxwell"],
+            "Productivity": ["Atomic Habits - James Clear", "Deep Work - Cal Newport"],
+            "Entrepreneurship": ["The Lean Startup - Eric Ries", "Zero to One - Peter Thiel"]
+        }
+        return books.get(self.focus_area, ["Mindset - Carol Dweck", "Grit - Angela Duckworth"])
 
 # Функція для перегляду списку всіх конференцій
 def view_all_conferences():
@@ -89,8 +102,7 @@ def view_conference_details(conference_number):
             if 0 < conference_number <= len(conference_list):
                 conference = conference_list[conference_number - 1]
                 print("\nДеталі конференції:")
-                print(conference.get_details())  
-                
+                print(conference.get_details())                
             else:
                 print("Невірний номер конференції.")
 
@@ -159,6 +171,7 @@ def main():
                         break
                     print("Тема конференції не може бути порожньою.")
                 conference = ScienceConference(name, location, participants, topic)
+                print("\nРекомендовані журнали:", ", ".join(conference.suggest_journals()))
             elif conf_type == 2:
                 while True:
                     industry = input("Введіть галузь бізнесової конференції: ").strip()
@@ -166,6 +179,8 @@ def main():
                         break
                     print("Галузь не може бути порожньою.")
                 conference = BusinessConference(name, location, participants, industry)
+                print("\nМожливі спонсори для цієї конференції:")
+                print(", ".join(conference.suggest_sponsors()))
             elif conf_type == 3:
                 while True:
                     focus_area = input("Введіть сферу розвитку конференції: ").strip()
@@ -173,6 +188,8 @@ def main():
                         break
                     print("Сфера розвитку не може бути порожньою.")
                 conference = DevelopmentConference(name, location, participants, focus_area)
+                print("\nРекомендовані книги з теми розвитку:")
+                print(", ".join(conference.recommend_books()))
             else:
                 print("Некоректний вибір типу конференції!")
                 continue
@@ -188,3 +205,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
